@@ -15,7 +15,7 @@ def call_local_llm(prompt):
         response = requests.post(
             f"{ollama_url}/api/generate",
             json={
-                "model": os.getenv("OLLAMA_MODEL", "llama3.2:1b"),
+                "model": os.getenv("OLLAMA_MODEL", "gemma4:e2b"),
                 "prompt": prompt,
                 "stream": False,
             },
