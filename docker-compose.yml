@@ -1,0 +1,64 @@
+services:
+  postgres:
+    image: postgres:15.4
+    container_name: chatbot_postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_DB: chatbot
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - chatbot_network
+    restart: always
+
+  ollama:
+    image: ollama/ollama
+    container_name: chatbot_ollama
+    volumes:
+      - ollama_data:/root/.ollama
+    networks:
+      - chatbot_network
+    restart: always
+    gpus: all
+
+  django:
+    build: ./myChatbot
+    container_name: chatbot_django
+    depends_on:
+      - postgres
+      - ollama
+    environment:
+      POSTGRES_DB: chatbot
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      OLLAMA_URL: http://ollama:11434
+      OLLAMA_MODEL: gemma4:e2b
+    volumes:
+      - static_volume:/usr/src/app/staticfiles
+    networks:
+      - chatbot_network
+    restart: always
+
+  nginx:
+    build: ./myNginx
+    container_name: chatbot_nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - django
+    volumes:
+      - static_volume:/usr/src/app/staticfiles
+    networks:
+      - chatbot_network
+    restart: always
+
+networks:
+  chatbot_network:
+
+volumes:
+  postgres_data:
+  static_volume:
+  ollama_data:

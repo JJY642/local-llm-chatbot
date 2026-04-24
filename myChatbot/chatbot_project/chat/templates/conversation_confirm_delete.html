@@ -1,0 +1,21 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>대화 삭제</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+<div class="container">
+    <h1>대화 삭제</h1>
+    <p>정말로 "{{ conversation.title }}" 대화를 삭제하시겠습니까?</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <button class="btn danger" type="submit">삭제</button>
+        <a class="btn secondary" href="{% url 'chat_room' conversation.pk %}">취소</a>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ conversation.title }}</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <script src="{% static 'scripts.js' %}" defer></script>
+</head>
+<body>
+<div class="container">
+    <div class="top-bar">
+        <a class="btn secondary" href="{% url 'conversation_list' %}">대화 목록</a>
+
+        <form method="post" action="{% url 'conversation_delete' conversation.pk %}">
+            {% csrf_token %}
+            <button class="btn danger" type="submit">대화 삭제</button>
+        </form>
+    </div>
+
+    <h1>{{ conversation.title }}</h1>
+
+    <div class="chat-box" id="chat-box">
+        {% for message in messages %}
+        <div class="message {{ message.sender }}">
+            <div class="sender">
+                {% if message.sender == "user" %}
+                    사용자
+                {% else %}
+                    Local LLM
+                {% endif %}
+            </div>
+            <div class="bubble">
+                {{ message.content|linebreaksbr }}
+            </div>
+            <div class="time">
+                {{ message.created_at|date:"H:i" }}
+            </div>
+        </div>
+        {% empty %}
+        <p class="empty">아직 메시지가 없습니다. 첫 질문을 입력하세요.</p>
+        {% endfor %}
+    </div>
+
+    <form class="chat-form" method="post" action="{% url 'send_message' conversation.pk %}">
+        {% csrf_token %}
+        <input type="text" name="message" placeholder="메시지를 입력하세요" autocomplete="off" required>
+        <button class="btn" type="submit">전송</button>
+    </form>
+</div>
+</body>
+</html>

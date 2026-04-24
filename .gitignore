@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
+myChatbot/chat/
+
+# Local DB
+db.sqlite3
+*.sqlite3
+
+# OS
+.DS_Store
+
+# Docker volumes / temp
+*.log

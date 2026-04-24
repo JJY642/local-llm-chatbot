@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Local LLM Chatbot</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+<div class="container">
+    <h1>Local LLM Chatbot</h1>
+    <p class="subtitle">Django + PostgreSQL + Nginx + Ollama 기반 채팅 웹앱</p>
+
+    <a class="btn" href="{% url 'conversation_new' %}">새 대화 시작</a>
+
+    <h2>대화 목록</h2>
+
+    <ul class="conversation-list">
+        {% for conversation in conversations %}
+        <li>
+            <a href="{% url 'chat_room' conversation.pk %}">
+                {{ conversation.title }}
+            </a>
+            <span class="date">{{ conversation.created_at|date:"Y-m-d H:i" }}</span>
+        </li>
+        {% empty %}
+        <li>아직 대화가 없습니다.</li>
+        {% endfor %}
+    </ul>
+</div>
+</body>
+</html>
