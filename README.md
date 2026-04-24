@@ -89,19 +89,21 @@ Message: 사용자 메시지 및 LLM 응답
 
 모델은 docker-compose.yml의 환경변수에서 변경할 수 있습니다.
 
-아래의 명령어로 설치 후 docker-compose.yml을 수정하면 됩니다.
+
+원하는 모델 설치
 
 ```bash
 docker compose exec ollama ollama pull <모델명> 
 ```
 
-```yaml
+docker-compose.yml에서 수정
+
 environment:
   OLLAMA_MODEL: gemma4:e2b  <- 이 부분을 수정하면 됩니다.
+
 
 ## 주의 사항
 
 최초 실행 시 반드시 LLM 모델을 설치해야 합니다.
 
 모델 설치 전에는 채팅 기능이 정상적으로 동작하지 않습니다.
-
